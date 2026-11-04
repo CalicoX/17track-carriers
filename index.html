@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DHL Express Tracking - Free Package Tracking &amp; Real-Time Updates | 17TRACK</title>
+    <meta
+      name="description"
+      content="Track DHL Express shipments with a waybill number. Real-time status, delivery times, customs help, and the 17TRACK tracking API."
+    />
+    <link rel="icon" href="/public/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="notice" id="notice">
+      <p>
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.4" />
+          <path d="M8 7.2V11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+          <circle cx="8" cy="5.1" r="0.7" fill="currentColor" />
+        </svg>
+        USPS tracking requests are limited due to policy changes. Follow our guide to unlock more requests.
+        <a href="https://www.17track.net/en" target="_blank" rel="noopener">Learn More&gt;</a>
+      </p>
+      <button type="button" class="notice-close" aria-label="Dismiss notice" onclick="document.getElementById('notice').hidden = true">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="logo" href="https://www.17track.net/en" aria-label="17TRACK">
+          <img src="/bfcm/logo-17track.svg" alt="17TRACK" />
+        </a>
+        <nav class="primary-nav" aria-label="Primary">
+          <a href="https://www.17track.net/en" target="_blank" rel="noopener">Order Tracking</a>
+          <a href="https://www.17track.com/en/products/returns" target="_blank" rel="noopener">17RETURNS</a>
+          <a href="https://www.17track.net/en/api" target="_blank" rel="noopener">API</a>
+          <span class="nav-rule" aria-hidden="true"></span>
+          <a href="https://www.17track.net/en/carriers" target="_blank" rel="noopener">More</a>
+        </nav>
+        <div class="header-actions">
+          <a class="lang" href="https://www.17track.net/en/carriers/dhl-express" target="_blank" rel="noopener">English</a>
+          <a class="login" href="https://user.17track.net/login?lang=en" target="_blank" rel="noopener">Login</a>
+          <a class="signup" href="https://user.17track.net/register?lang=en" target="_blank" rel="noopener"><span>Sign up</span><i><img src="/bfcm/icon-caret.svg" alt="" /></i></a>
+          <a class="shopify" href="https://apps.shopify.com/17track" target="_blank" rel="noopener"><span><img src="/bfcm/icon-bag.svg" alt="" /> Shopify App</span><i><img src="/bfcm/icon-caret.svg" alt="" /></i></a>
+          <button type="button" class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="https://www.17track.net/en">Home</a>
+          <span aria-hidden="true">›</span>
+          <a href="https://www.17track.net/en/carriers">Carriers</a>
+          <span aria-hidden="true">›</span>
+          <span aria-current="page">DHL Express</span>
+        </nav>
+
+        <div class="carrier-head">
+          <img src="/dhl.webp" width="64" height="64" alt="DHL Express" />
+          <h1>DHL Tracking International</h1>
+        </div>
+        <p class="lead">
+          Please enter the DHL Express tracking number to check the latest shipping status.
+        </p>
+        <p class="carrier-meta">
+          <a href="tel:+18002255345">+1 (800) 225-5345</a>
+          <a href="https://mydhl.express.dhl/" target="_blank" rel="noopener">https://mydhl.express.dhl/</a>
+        </p>
+
+        <form class="track-field" id="track-form" action="https://t.17track.net/en#nums=" method="get">
+          <div class="track-shell">
+            <div class="track-desktop-list tracking-scroll" id="track-lines">
+              <div class="track-line" data-tracking-line>
+                <span class="line-no">1.</span>
+                <div class="line-field">
+                  <input type="text" aria-label="Tracking number 1" autocomplete="off" autocapitalize="off" spellcheck="false" />
+                  <div class="placeholder">
+                    <p>Enter up to 40 tracking numbers, one per line</p>
+                    <p>Supports airline cargo tracking (e.g. 123-12345678).</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="track-tool-blur" aria-hidden="true"></div>
+          <div class="track-toolbar">
+            <div class="track-toolbar-bar">
+              <div class="track-toolbar-extra" id="track-tools" hidden>
+                <button type="button" class="tool-sheen tool-icon" aria-label="Filter" title="Filter">
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></svg>
+                </button>
+                <button type="button" class="tool-clear tool-icon" aria-label="Clear tracking numbers" title="Clear" id="clear-lines">
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+              <div class="track-toolbar-end">
+                <button type="submit" class="track-submit" aria-label="Track">
+                  <span class="track-submit-icon" aria-hidden="true"></span>
+                  <span class="track-submit-label">TRACK</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div class="advance">
+          <p class="advance-label"><span>Advance features</span></p>
+          <div class="advance-actions">
+            <a class="advance-btn advance-btn-orange" href="https://user.17track.net/register?lang=en" target="_blank" rel="noopener">
+              <span class="advance-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M4 5.25C4 4.83579 4.33579 4.5 4.75 4.5H11.7414C12.9692 4.5 14.0483 5.31394 14.3856 6.49452L14.8125 7.98862C14.837 8.07452 14.9055 8.1408 14.9922 8.16247L16.6744 8.58303C17.4535 8.77779 18 9.47776 18 10.2808V11.5C18 12.2108 17.5763 12.8226 16.9676 13.0966C16.9889 13.2279 17 13.3627 17 13.5C17 14.8807 15.8807 16 14.5 16C13.1193 16 12 14.8807 12 13.5C12 13.4156 12.0042 13.3322 12.0123 13.25H8.98766C8.99582 13.3322 9 13.4156 9 13.5C9 14.8807 7.88071 16 6.5 16C5.11929 16 4 14.8807 4 13.5C4 13.1444 4.07422 12.8062 4.20802 12.5H3.75C3.33579 12.5 3 12.1642 3 11.75C3 11.3358 3.33579 11 3.75 11H6.25C6.27988 11 6.30935 11.0017 6.33831 11.0051C6.39177 11.0017 6.44568 11 6.5 11C7.19935 11 7.83163 11.2872 8.28536 11.75H12.7146C13.1684 11.2872 13.8007 11 14.5 11C15.1982 11 15.8296 11.2863 16.2832 11.7478C16.4056 11.7316 16.5 11.6268 16.5 11.5V10.2808C16.5 10.1661 16.4219 10.0661 16.3106 10.0382L14.6284 9.61769C14.0217 9.466 13.542 9.00205 13.3702 8.4007L12.9433 6.9066C12.79 6.36997 12.2995 6 11.7414 6H4.75C4.33579 6 4 5.66421 4 5.25ZM6.5 14.5C7.05228 14.5 7.5 14.0523 7.5 13.5C7.5 12.9477 7.05228 12.5 6.5 12.5C5.94772 12.5 5.5 12.9477 5.5 13.5C5.5 14.0523 5.94772 14.5 6.5 14.5ZM14.5 14.5C15.0523 14.5 15.5 14.0523 15.5 13.5C15.5 12.9477 15.0523 12.5 14.5 12.5C13.9477 12.5 13.5 12.9477 13.5 13.5C13.5 14.0523 13.9477 14.5 14.5 14.5Z"/><path d="M3.25 8C2.83579 8 2.5 8.33579 2.5 8.75C2.5 9.16421 2.83579 9.5 3.25 9.5H8.25C8.66421 9.5 9 9.16421 9 8.75C9 8.33579 8.66421 8 8.25 8H3.25Z"/></svg>
+              </span>
+              <span class="advance-text">Auto-import</span>
+              <svg class="advance-arrow" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a class="advance-btn advance-btn-blue" href="https://www.17track.net/en/api" target="_blank" rel="noopener">
+              <span class="advance-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+              </span>
+              <span class="advance-text">Tracking API</span>
+              <svg class="advance-arrow" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <aside class="ad-slot" aria-label="Advertisement">
+          <iframe
+            title="Advertisement"
+            src="https://ads.17track.net/www/delivery/afr.php?zoneid=2&amp;ad_size=728x90"
+            width="728"
+            height="90"
+            scrolling="no"
+          ></iframe>
+        </aside>
+      </section>
+
+      <section class="content-wrap" id="guide">
+        <div class="content-grid">
+          <aside class="toc" aria-label="On this page">
+            <a href="#about">About DHL Express</a>
+            <a href="#quick-answer">Quick Answer</a>
+            <a href="#how-to-track">How to Track DHL Express Packages</a>
+            <a href="#formats">Tracking Number Formats and Examples</a>
+            <a href="#statuses">Tracking Statuses and Meanings</a>
+            <a href="#services">Services and Delivery Times</a>
+            <a href="#problems">Common Tracking Problems and Solutions</a>
+            <a href="#customs">International Shipping, Customs and Carrier Handoffs</a>
+            <a href="#delivery">Delivery Management and Post-shipment Options</a>
+            <a href="#claims">Lost, Damaged, Claims, Insurance and Refunds</a>
+            <a href="#restrictions">Shipping Restrictions and Special Handling</a>
+            <a href="#support">Customer Service</a>
+            <a href="#ecommerce">Ecommerce and Business Tracking</a>
+            <a href="#faq">FAQ</a>
+            <a href="#api">Tracking API</a>
+            <a href="#sources">Sources &amp; References</a>
+          </aside>
+
+          <article class="article">
+            <h2 id="about">About DHL Express</h2>
+            <p>
+              DHL Express is the international time-definite express parcel and document carrier in DHL Group. DHL Express collects shipments from shippers, operates export and import express networks, manages customs-related shipment processing where the service includes brokerage support, and delivers either through DHL Express units or local delivery partners where DHL Express uses a partner for the final mile.
+            </p>
+            <h3>DHL Express overview</h3>
+            <table>
+              <thead>
+                <tr><th>Field</th><th>Verified information</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Official name</td><td>DHL Express</td></tr>
+                <tr><td>Official website</td><td><a href="https://mydhl.express.dhl/" target="_blank" rel="noopener">https://mydhl.express.dhl/</a></td></tr>
+                <tr><td>Carrier type</td><td>International express courier, customs brokerage support provider, line-haul carrier and last-mile delivery operator or coordinator.</td></tr>
+                <tr><td>Primary region</td><td>Global cross-border express network for documents and parcels.</td></tr>
+                <tr><td>Tracking page</td><td><a href="https://www.dhl.com/global-en/home/tracking.html" target="_blank" rel="noopener">DHL Tracking</a></td></tr>
+                <tr><td>Parent organization</td><td>DHL Group.</td></tr>
+                <tr><td>Founded and headquarters</td><td>DHL brand history and DHL Group corporate headquarters are published by DHL Group; local DHL Express operating companies may have separate legal entities and addresses.</td></tr>
+              </tbody>
+            </table>
+
+            <h3>Carrier Entity Relationships</h3>
+            <table>
+              <thead>
+                <tr><th>Entity</th><th>Relationship summary</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>DHL Express</td><td>DHL Express is the canonical carrier for DHL time-definite international express shipments.</td></tr>
+                <tr><td>DHL Express Worldwide, DHL Express 9:00, 10:30 and 12:00</td><td>These are international express services operated under DHL Express service terms.</td></tr>
+                <tr><td>MyDHL+</td><td>MyDHL+ is the DHL Express shipping and tracking portal for creating shipments, booking pickup and managing shipment data.</td></tr>
+                <tr><td>DHL Express hubs, gateways and service centers</td><td>DHL Express uses origin service centers, export gateways, air hubs, import gateways and destination service centers during the tracking lifecycle.</td></tr>
+                <tr><td>Customs authorities and destination delivery partners</td><td>Customs authorities make release decisions, while DHL Express or an approved delivery partner performs destination delivery after clearance.</td></tr>
+                <tr><td>17TRACK</td><td>17TRACK aggregates available DHL Express tracking events and standardizes them for consumers and businesses.</td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="quick-answer">Quick Answer</h2>
+            <p>
+              To track DHL Express, enter the DHL Express waybill number on DHL Tracking or use 17TRACK to monitor the same shipment in a multi-carrier dashboard. If no result appears, first confirm that the number is a DHL Express waybill rather than a merchant order ID, DHL eCommerce number, freight reference, invoice number or postal tracking number.
+            </p>
+            <p class="tip">
+              <strong>Pro Tip:</strong> 17TRACK is useful when a seller sends multiple tracking IDs or when a shipment may move through more than one carrier. DHL Express remains the party that transports the shipment and controls delivery changes, customs contact and claims under DHL Express terms.
+            </p>
+
+            <h2 id="how-to-track">How to Track DHL Express Packages</h2>
+            <p>
+              DHL Express tracking starts with a waybill number, sometimes called an air waybill or shipment number. A shipper usually receives it on the label, MyDHL+ shipment record, pickup receipt or shipping confirmation; an online buyer usually receives it in a merchant dispatch email or order page.
+            </p>
+            <ul>
+              <li>Use the official DHL Tracking page for DHL Express-only tracking, delivery proof and DHL-controlled status explanations.</li>
+              <li>Use 17TRACK when you want automatic carrier detection, multi-carrier visibility, normalized shipment stages or batch tracking with other carriers.</li>
+              <li>If tracking is empty, remove spaces or hyphens, check whether the seller provided an order number instead of a waybill, and allow time between label creation and the first DHL Express acceptance scan.</li>
+              <li>If the tracking number belongs to DHL eCommerce, DHL Global Forwarding, a postal operator or a marketplace logistics partner, select the correct carrier because those shipments can have different networks and support teams.</li>
+            </ul>
+            <h3>Identifier lookup guide</h3>
+            <table>
+              <thead>
+                <tr><th>Identifier</th><th>Use it how</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>DHL Express waybill number</td><td>Use for official DHL Express tracking and 17TRACK tracking.</td></tr>
+                <tr><td>Merchant order number</td><td>Use with the seller, not as a carrier tracking number unless the seller explicitly enables reference tracking.</td></tr>
+                <tr><td>Shipment reference</td><td>May help shippers search in MyDHL+ or DHL reference tools, but it is not always visible to recipients.</td></tr>
+                <tr><td>Delivery notice or attempted delivery card</td><td>Use for redelivery, pickup or local customer service after a failed delivery attempt.</td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="formats">Tracking Number Formats and Examples</h2>
+            <p>
+              DHL Express primarily tracks by a DHL Express waybill number. DHL systems may also search by reference for shippers, but a reference that is searchable in an account is not the same as a carrier-issued waybill. Spaces and hyphens should be removed before lookup.
+            </p>
+            <h3>Tracking Number Format</h3>
+            <table>
+              <thead>
+                <tr><th>Identifier family</th><th>Normalized pattern</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>DHL Express waybill</td><td>Usually 10 numeric digits, shown as #### #### ## or ########## after normalization.</td></tr>
+                <tr><td>DHL Express shipment reference</td><td>Merchant-defined alphanumeric reference; no single public pattern.</td></tr>
+                <tr><td>DHL eCommerce or postal partner ID</td><td>May be numeric or alphanumeric, including UPU-style postal patterns such as XX#########YY.</td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="statuses">Tracking Statuses and Meanings</h2>
+            <p>
+              DHL Express statuses follow a lifecycle from shipment information received, pickup, facility processing, customs and delivery. A status must be read together with location, timestamp and whether DHL Express physically scanned the shipment.
+            </p>
+            <h3>Status Quick Lookup</h3>
+            <table>
+              <thead>
+                <tr><th>Status</th><th>What it means</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Shipment information received</td><td>A shipper created electronic shipment data, but this does not by itself prove DHL Express has the parcel.</td></tr>
+                <tr><td>Picked up</td><td>DHL Express accepted the shipment from the shipper or pickup location.</td></tr>
+                <tr><td>Processed at facility / Departed facility</td><td>The shipment is moving through DHL Express sorting, gateway or hub operations.</td></tr>
+                <tr><td>Clearance event / Customs status updated</td><td>The shipment is in a customs-related step and may require documents, duties, taxes or authority review.</td></tr>
+                <tr><td>Out for delivery</td><td>The shipment is with the destination courier or local delivery route for an attempt that day where operations allow.</td></tr>
+                <tr><td>Delivered</td><td>DHL Express recorded a delivery completion scan, often with proof of delivery or recipient/signature details where available.</td></tr>
+                <tr><td>Delivery attempted / Consignee not available</td><td>The courier could not complete delivery because access, address, payment or recipient availability failed.</td></tr>
+                <tr><td>Returned to shipper</td><td>The shipment is being returned because delivery, customs, payment or address resolution failed under service rules.</td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="services">Services and Delivery Times</h2>
+            <p>
+              DHL Express services are time-definite international express products. Availability, cutoff time, service commitment, excluded commodities, remote-area handling and money-back terms vary by origin, destination, account and local DHL Express terms.
+            </p>
+            <h3>Service Comparison</h3>
+            <table>
+              <thead>
+                <tr><th>Service</th><th>Best for</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>DHL Express Worldwide</td><td>International parcels and documents that need express delivery by end of business day where available.</td></tr>
+                <tr><td>DHL Express 9:00 / 10:30 / 12:00</td><td>Time-critical documents and parcels that need delivery before a stated morning time where offered.</td></tr>
+                <tr><td>DHL Same Day</td><td>Urgent shipments requiring customized immediate transport rather than standard network timing.</td></tr>
+              </tbody>
+            </table>
+            <h3>Delivery Time</h3>
+            <table>
+              <thead>
+                <tr><th>Service</th><th>Published delivery standard</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>DHL Express Worldwide</td><td>International delivery by end of business day where the service is available; exact transit time is lane-specific.</td></tr>
+                <tr><td>DHL Express 9:00 / 10:30 / 12:00</td><td>Delivery before the named morning time on the committed delivery date where available.</td></tr>
+              </tbody>
+            </table>
+            <h3>Destination Country Delivery Times</h3>
+            <table>
+              <thead>
+                <tr><th>Destination Country / Region</th><th>Estimated Delivery Time Range</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>United States</td><td>2-5 business days on common express lanes after pickup and export acceptance.</td></tr>
+                <tr><td>Canada</td><td>2-5 business days.</td></tr>
+                <tr><td>Mexico</td><td>2-6 business days.</td></tr>
+                <tr><td>United Kingdom</td><td>2-5 business days.</td></tr>
+                <tr><td>Germany</td><td>2-5 business days.</td></tr>
+                <tr><td>France</td><td>2-5 business days.</td></tr>
+                <tr><td>Spain</td><td>2-5 business days.</td></tr>
+                <tr><td>Italy</td><td>2-6 business days.</td></tr>
+                <tr><td>Netherlands</td><td>2-5 business days.</td></tr>
+                <tr><td>Poland</td><td>2-6 business days.</td></tr>
+                <tr><td>Sweden</td><td>2-6 business days.</td></tr>
+                <tr><td>Belgium</td><td>2-5 business days.</td></tr>
+                <tr><td>Switzerland</td><td>2-5 business days; import VAT and customs assessment can add time.</td></tr>
+                <tr><td>Japan</td><td>2-5 business days.</td></tr>
+                <tr><td>South Korea</td><td>2-5 business days; personal customs code may be required for some imports.</td></tr>
+                <tr><td>Australia</td><td>3-6 business days; biosecurity inspection may affect restricted commodities.</td></tr>
+                <tr><td>New Zealand</td><td>3-7 business days.</td></tr>
+                <tr><td>Singapore</td><td>2-4 business days.</td></tr>
+                <tr><td>Malaysia</td><td>2-5 business days.</td></tr>
+                <tr><td>Thailand</td><td>2-6 business days.</td></tr>
+                <tr><td>India</td><td>3-8 business days; KYC, IEC or importer documentation may be required.</td></tr>
+                <tr><td>Philippines</td><td>3-8 business days.</td></tr>
+                <tr><td>Indonesia</td><td>3-9 business days; customs and tax ID issues are common delay sources.</td></tr>
+                <tr><td>Brazil</td><td>4-10 business days; CPF/CNPJ and customs inspection may extend transit.</td></tr>
+                <tr><td>Chile</td><td>3-8 business days.</td></tr>
+                <tr><td>United Arab Emirates</td><td>2-5 business days.</td></tr>
+                <tr><td>Saudi Arabia</td><td>3-7 business days; importer ID and customs data can affect release.</td></tr>
+                <tr><td>South Africa</td><td>3-8 business days; customs and remote-area delivery can add time.</td></tr>
+              </tbody>
+            </table>
+            <p>
+              The country table is an operational estimate for common DHL Express lanes, not a universal DHL guarantee. Use MyDHL+ for the current origin-to-destination commitment, cutoff and surcharge rules.
+            </p>
+
+            <h2 id="problems">Common Tracking Problems and Solutions</h2>
+            <h3>Problem &amp; Solution</h3>
+            <table>
+              <thead>
+                <tr><th>Problem/status shown</th><th>Immediate action</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Invalid number or no result</td><td>Remove spaces, verify the waybill with the shipper, and check whether the number belongs to DHL eCommerce or another carrier.</td></tr>
+                <tr><td>Shipment information received only</td><td>Ask the shipper when DHL Express physically collected or accepted the shipment.</td></tr>
+                <tr><td>Long time without update</td><td>Check the last facility and customs status; wait through normal weekend/holiday gaps before opening an inquiry.</td></tr>
+                <tr><td>Clearance event</td><td>Respond to DHL requests for invoice, tax ID, importer information or duty payment.</td></tr>
+                <tr><td>Delivery exception or address issue</td><td>Use DHL On Demand Delivery or contact DHL Express immediately with a corrected address or access instructions.</td></tr>
+                <tr><td>Delivered but not received</td><td>Check reception, mailroom, household, neighbors, safe place and Proof of Delivery before opening a dispute.</td></tr>
+                <tr><td>Lost, damaged or missing contents</td><td>Preserve packaging, take photos and have the paying shipper start a DHL Express claim where required.</td></tr>
+                <tr><td>Returned to shipper</td><td>Contact the seller or shipper because commercial refund, replacement or reshipment is not decided by 17TRACK.</td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="customs">International Shipping, Customs and Carrier Handoffs</h2>
+            <p>
+              DHL Express is an integrated express carrier, so many shipments stay within the DHL Express network from pickup to delivery. Customs authorities are separate legal decision makers, and some destinations or remote areas may involve an authorized delivery partner after DHL Express arranges the handoff.
+            </p>
+            <h3>International Flow</h3>
+            <table>
+              <thead>
+                <tr><th>Stage</th><th>Typical tracking event</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Label and electronic data</td><td>Shipment information received.</td></tr>
+                <tr><td>Origin pickup and export processing</td><td>Picked up; processed at facility; departed facility.</td></tr>
+                <tr><td>Export security and line-haul</td><td>Departed from facility; arrived at sort facility or gateway.</td></tr>
+                <tr><td>Import customs</td><td>Clearance event or customs status updated.</td></tr>
+                <tr><td>Destination service center</td><td>Processed at destination facility.</td></tr>
+                <tr><td>Partner or remote-area handoff</td><td>Forwarded for delivery or local delivery arrangement where applicable.</td></tr>
+                <tr><td>Last mile</td><td>Out for delivery, delivery attempted or delivered.</td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="delivery">Delivery Management and Post-shipment Options</h2>
+            <h3>Delivery Management</h3>
+            <table>
+              <thead>
+                <tr><th>Option</th><th>Who can request</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>DHL On Demand Delivery</td><td>Recipient where the destination and shipment are eligible.</td></tr>
+                <tr><td>Proof of Delivery</td><td>Shipper or recipient with a valid waybill, subject to local visibility and privacy rules.</td></tr>
+                <tr><td>Redelivery or pickup after failed attempt</td><td>Recipient using DHL notification, delivery notice or customer service.</td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="claims">Lost, Damaged, Claims, Insurance and Refunds</h2>
+            <p>
+              A tracking inquiry, damage report, insurance claim, postage refund and seller refund are separate processes. DHL Express claim rights usually belong to the contracting shipper or payer unless local rules or account terms allow another party to file.
+            </p>
+            <h3>Claims and Refunds</h3>
+            <table>
+              <thead>
+                <tr><th>Process</th><th>Use when</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Tracking investigation</td><td>Use when scans stop, delivery is disputed or customs status needs clarification.</td></tr>
+                <tr><td>Loss or damage claim</td><td>Use when DHL Express confirms loss, visible damage, missing contents or non-delivery requiring compensation review.</td></tr>
+                <tr><td>Seller refund or replacement</td><td>Use when you bought from an online merchant and need commercial resolution under marketplace or seller policy.</td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="restrictions">Shipping Restrictions and Special Handling</h2>
+            <h3>Shipping Restrictions</h3>
+            <table>
+              <thead>
+                <tr><th>Category</th><th>Possible tracking/delivery impact</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Prohibited items</td><td>Shipment may be refused, stopped, returned, seized or disposed under law and DHL Express rules.</td></tr>
+                <tr><td>Dangerous goods, batteries and liquids</td><td>Incorrect declaration can cause security hold, return or regulatory refusal.</td></tr>
+                <tr><td>Customs-controlled goods</td><td>Missing permits, licenses or importer documents can create clearance events and delivery delay.</td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="support">Customer Service</h2>
+            <h3>Customer Service</h3>
+            <table>
+              <thead>
+                <tr><th>Channel</th><th>Verified contact/link</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Tracking</td><td><a href="https://www.dhl.com/global-en/home/tracking.html" target="_blank" rel="noopener">https://www.dhl.com/global-en/home/tracking.html</a></td></tr>
+                <tr><td>Customer service locator</td><td><a href="https://www.dhl.com/global-en/home/customer-service.html" target="_blank" rel="noopener">https://www.dhl.com/global-en/home/customer-service.html</a></td></tr>
+                <tr><td>Delivery management</td><td><a href="https://delivery.dhl.com/" target="_blank" rel="noopener">https://delivery.dhl.com/</a></td></tr>
+                <tr><td>Service point locator</td><td><a href="https://locator.dhl.com/" target="_blank" rel="noopener">https://locator.dhl.com/</a></td></tr>
+              </tbody>
+            </table>
+            <p>
+              For faster escalation, prepare the waybill, shipper name, ship date, service, destination address, phone/email, last scan, contents description, value proof and photos if damage is involved.
+            </p>
+
+            <h2 id="ecommerce">Ecommerce and Business Tracking</h2>
+            <p>
+              Businesses use DHL Express APIs for DHL Express shipping, rating, pickup and tracking inside DHL account workflows. Businesses use 17TRACK when they need normalized tracking across DHL Express and many other carriers, carrier auto-detection, batch registration and webhook-style operations from a multi-carrier platform.
+            </p>
+            <h3>Developer/API Comparison</h3>
+            <table>
+              <thead>
+                <tr><th>Option</th><th>Provider</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>DHL Express APIs</td><td><a href="https://developer.dhl.com/" target="_blank" rel="noopener">DHL Developer / DHL Express</a></td></tr>
+                <tr><td>17TRACK Tracking API</td><td><a href="https://www.17track.net/en/api" target="_blank" rel="noopener">17TRACK</a></td></tr>
+              </tbody>
+            </table>
+
+            <h2 id="faq">FAQ</h2>
+            <div class="faq">
+              <h3>1. How do I track my DHL Express package?</h3>
+              <p>Enter the DHL Express waybill number on DHL Tracking or use 17TRACK to view available shipment events in a multi-carrier dashboard.</p>
+              <h3>2. Where can I find my DHL Express tracking number?</h3>
+              <p>The DHL Express waybill is normally on the shipping label, shipper receipt, MyDHL+ record, merchant order page or dispatch email.</p>
+              <h3>3. What does a DHL Express tracking number look like?</h3>
+              <p>A common DHL Express waybill is 10 numeric digits, but references and non-DHL Express partner IDs can look different, so verify the carrier if the number does not track.</p>
+              <h3>4. When will the first DHL Express tracking update appear?</h3>
+              <p>The first useful physical update usually appears after DHL Express picks up or accepts the shipment, while “shipment information received” only means the shipper created data.</p>
+              <h3>5. Why is my DHL Express tracking not updating?</h3>
+              <p>DHL Express tracking may pause during line-haul, customs review, weekend operations, remote-area transfer or when the shipment is waiting for documents or duty payment.</p>
+              <h3>6. How long does DHL Express delivery take?</h3>
+              <p>DHL Express delivery time depends on origin, destination, cutoff, service, customs and local holidays; use MyDHL+ for the current lane-specific estimate or commitment.</p>
+              <h3>7. What should I do after a DHL Express delivery attempt failed?</h3>
+              <p>Use the DHL notification, delivery notice or DHL On Demand Delivery to arrange redelivery, pickup or delivery instructions where the shipment is eligible.</p>
+              <h3>8. What if DHL Express says delivered but I did not receive the package?</h3>
+              <p>Check the delivery location, reception, mailroom, household, neighbors and Proof of Delivery first, then contact DHL Express and the shipper with the waybill and dispute details.</p>
+              <h3>9. How do I report a lost or damaged DHL Express shipment?</h3>
+              <p>Preserve packaging, take photos, keep value proof and ask the shipper or account holder to start the DHL Express claim process when required by local terms.</p>
+              <h3>10. How do I contact DHL Express customer service?</h3>
+              <p>Use the DHL Customer Service page for your country and prepare the waybill, shipment date, addresses, last scan and any customs or damage evidence.</p>
+              <h3>11. Is DHL Express the same as DHL eCommerce?</h3>
+              <p>DHL Express and DHL eCommerce are different DHL services; DHL Express is time-definite express, while DHL eCommerce often uses economy or postal-style networks.</p>
+              <h3>12. What does a DHL Express clearance event mean?</h3>
+              <p>A clearance event means the shipment is in a customs-related step and may need invoice details, importer identification, duty payment or customs authority review.</p>
+              <h3>13. Can a DHL Express tracking number change during international shipping?</h3>
+              <p>The DHL Express waybill usually remains the main identifier, but a delivery partner or merchant system may display an additional local reference in some cases.</p>
+              <h3>14. Does DHL Express provide Proof of Delivery?</h3>
+              <p>DHL Express may provide Proof of Delivery where available, but signature details and visibility can depend on country, service, privacy rules and shipment status.</p>
+              <h3>15. Is the DHL Express estimated delivery date guaranteed?</h3>
+              <p>An estimated delivery date is not automatically a guarantee; time-definite and money-back eligibility depend on the selected service, local terms and exclusions.</p>
+              <h3>16. Can businesses track DHL Express shipments through an API?</h3>
+              <p>Businesses can use DHL Developer APIs for DHL Express account integrations or 17TRACK API for multi-carrier tracking, depending on whether the need is carrier-specific operations or aggregated visibility.</p>
+              <h3>17. Can 17TRACK change my DHL Express delivery address or approve a claim?</h3>
+              <p>No. 17TRACK is an independent tracking platform and cannot change addresses, collect duties, release customs holds, approve claims or issue merchant refunds.</p>
+            </div>
+
+            <h2 id="api">Tracking API</h2>
+            <pre><code># 1. DHL Express official tracking API
+# Current DHL Express APIs are documented through the DHL Developer portal.
+# Use the current DHL Developer product documentation for endpoint, method,
+# credentials, request body and account eligibility:
+# https://developer.dhl.com/
+# Do not reuse old country-specific XML endpoints unless DHL confirms them
+# for your account.
+
+# 2. 17TRACK Tracking API
+# Register a DHL Express tracking number for multi-carrier tracking.
+# 100001 is left as a placeholder unless your 17TRACK carrier list
+# confirms the current DHL Express carrier code for your account.
+
+curl -X POST "https://api.17track.net/track/v2.4/register" \
+  -H "17token: YourKey" \
+  -H "Content-Type: application/json" \
+  -d '[
+    {
+      "number": "TRACKING_NUMBER",
+      "carrier": "100001"
+    }
+  ]'</code></pre>
+
+            <h2 id="sources">Sources &amp; References</h2>
+            <ul class="sources">
+              <li><a href="https://mydhl.express.dhl/" target="_blank" rel="noopener">MyDHL+</a> — Official DHL Express shipping and tracking portal. DHL Express</li>
+              <li><a href="https://www.dhl.com/global-en/home/tracking.html" target="_blank" rel="noopener">DHL Tracking</a> — Official shipment tracking page. DHL</li>
+              <li><a href="https://www.dhl.com/global-en/home/our-divisions/express.html" target="_blank" rel="noopener">DHL Express</a> — Official DHL Express division page. DHL</li>
+              <li><a href="https://www.dhl.com/global-en/home/customer-service.html" target="_blank" rel="noopener">DHL Customer Service</a> — Official support locator. DHL</li>
+              <li><a href="https://delivery.dhl.com/" target="_blank" rel="noopener">DHL On Demand Delivery</a> — Official delivery management page. DHL Express</li>
+              <li><a href="https://locator.dhl.com/" target="_blank" rel="noopener">DHL Locator</a> — Official service point locator. DHL</li>
+              <li><a href="https://developer.dhl.com/" target="_blank" rel="noopener">DHL Developer</a> — Official DHL API portal. DHL</li>
+              <li><a href="https://www.17track.net/en/api" target="_blank" rel="noopener">17TRACK API Documentation</a> — Tracking API reference. 17TRACK</li>
+            </ul>
+            <p class="disclaimer">17TRACK is an independent tracking platform and is not affiliated with DHL Express.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="promos" aria-label="17TRACK products">
+        <a class="promo" href="https://www.17track.com/en?utm_source=www.17track.net&amp;utm_medium=carriers&amp;utm_campaign=Get-started" target="_blank" rel="noopener">
+          <span class="promo-kicker">Shopify</span>
+          <p>An order tracking app built for Shopify sellers, keeping track of packages.</p>
+          <span class="promo-meta">★★★★★ 4.9/5</span>
+          <span class="promo-cta">Get started →</span>
+        </a>
+        <a class="promo" href="https://www.17track.net/en/api?utm_source=carriers&amp;utm_medium=referer&amp;utm_campaign=20230130-carrier-open-api" target="_blank" rel="noopener">
+          <span class="promo-kicker">API</span>
+          <p>Tracking API makes auto track &amp; trace and webhook push a breeze.</p>
+          <span class="promo-meta">3500+ Carrier partners</span>
+          <span class="promo-cta">Start a free trial →</span>
+        </a>
+        <a class="promo" href="https://www.17track.net/en/app?utm_source=carriers&amp;utm_medium=referer&amp;utm_campaign=20230130-carrier-open-app" target="_blank" rel="noopener">
+          <span class="promo-kicker">App</span>
+          <p>Get real-time notifications on delivery updates.</p>
+          <span class="promo-meta">260,000 Installs</span>
+          <span class="promo-cta">Download now →</span>
+        </a>
+      </section>
+
+      <section class="recommend">
+        <h2>Track your package</h2>
+        <p>Global express parcel tracking service</p>
+        <ul>
+          <li><a href="https://www.17track.net/en/carriers/usps">USPS</a></li>
+          <li><a href="https://www.17track.net/en/carriers/ups">UPS</a></li>
+          <li><a href="https://www.17track.net/en/carriers/fedex">FedEx</a></li>
+          <li><a href="https://www.17track.net/en/carriers/amazon">Amazon</a></li>
+          <li><a href="https://www.17track.net/en/carriers/china-post">China Post</a></li>
+          <li><a href="https://www.17track.net/en/carriers/4px">4PX</a></li>
+          <li><a href="https://www.17track.net/en/carriers/china-ems">EMS</a></li>
+          <li><a href="https://www.17track.net/en/carriers/lbc-express">LBC Express</a></li>
+          <li><a href="https://www.17track.net/en/carriers/yunexpress">YunExpress</a></li>
+          <li><a href="https://www.17track.net/en/carriers/royal-mail">Royal Mail</a></li>
+          <li><a href="https://www.17track.net/en/carriers/yanwen">YANWEN</a></li>
+          <li><a href="https://www.17track.net/en/carriers/aliexpress">AliExpress</a></li>
+          <li><a href="https://www.17track.net/en/carriers/pitney-bowes">Pitney Bowes</a></li>
+          <li><a href="https://www.17track.net/en/carriers/india-post">India Post</a></li>
+          <li><a href="https://www.17track.net/en/carriers/js-express">JS</a></li>
+          <li><a href="https://www.17track.net/en/carriers/uniuni">UniUni</a></li>
+          <li><a href="https://www.17track.net/en/carriers/dhgate">Dhgate</a></li>
+          <li><a href="https://www.17track.net/en/carriers/ebay">Ebay</a></li>
+          <li><a href="https://www.17track.net/en/carriers/shein">Shein</a></li>
+          <li><a href="https://www.17track.net/en/carriers/winit">WINIT</a></li>
+        </ul>
+      </section>
+
+      <section class="join">
+        <div>
+          <p>A professional and stable global package tracking platform.</p>
+          <a href="https://www.17track.net/en/carriers" target="_blank" rel="noopener">Join us as a carrier</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top">
+        <section class="footer-brand">
+          <a href="https://www.17track.net/en" aria-label="17TRACK">
+            <img src="/footer/logo-footer.svg" width="150" height="24" alt="17TRACK" />
+          </a>
+          <h3>Who We Are</h3>
+          <p>Track all your orders in one place. Sign up to get notifications at every step, and keep your orders organized and managed here.</p>
+          <div class="store-badges">
+            <a href="https://apps.apple.com/cn/app/17track-%E5%9B%BD%E9%99%85%E7%89%A9%E6%B5%81%E8%BD%A8%E8%BF%B9%E6%9F%A5%E8%AF%A2/id6761287858" target="_blank" rel="noopener">
+              <img src="/footer/badge-appstore.webp" width="154" height="44" alt="Download on the App Store" />
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=yqtrack.app" target="_blank" rel="noopener">
+              <img src="/footer/badge-googleplay.webp" width="154" height="44" alt="Get it on Google Play" />
+            </a>
+          </div>
+          <div class="socials" aria-label="Social links">
+            <button type="button" aria-label="WeChat" style="background:#2aae67">
+              <img src="/footer/wechat.svg" alt="" />
+              <span class="qr"><img src="/footer/wechat-qr.webp" alt="" /></span>
+            </button>
+            <button type="button" aria-label="Weibo" style="background:#e6162d">
+              <img src="/footer/weibo.svg" alt="" />
+              <span class="qr"><img src="/footer/weibo-qr.webp" alt="" /></span>
+            </button>
+            <a href="https://www.facebook.com/17track" target="_blank" rel="noopener" aria-label="Facebook" style="background:#365899"><img src="/footer/facebook.svg" alt="" /></a>
+            <a href="https://twitter.com/17track" target="_blank" rel="noopener" aria-label="Twitter" style="background:#1da1f2"><img src="/footer/twitter.svg" alt="" /></a>
+            <a href="https://www.linkedin.com/company/17track" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="/footer/linkedin.svg" alt="" width="24" height="24" /></a>
+            <a href="https://www.youtube.com/@17TRACKOFFICIAL" target="_blank" rel="noopener" aria-label="YouTube"><img src="/footer/youtube.svg" alt="" /></a>
+          </div>
+        </section>
+        <nav class="footer-nav" aria-label="Footer">
+          <div>
+            <h3>About</h3>
+            <a href="https://www.17track.net/en/about" target="_blank" rel="noopener">About us</a>
+            <a href="https://www.17track.net/en/about/licensing" target="_blank" rel="noopener">Terms</a>
+            <a href="https://www.17track.net/en/about/privacy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://www.17track.net/en/about/copyright" target="_blank" rel="noopener">Copyright</a>
+            <a href="https://www.17track.net/en/about/dpa" target="_blank" rel="noopener">DPA</a>
+          </div>
+          <div>
+            <h3>User Guide</h3>
+            <a href="https://help.17track.net/hc/en-us/articles/228250808" target="_blank" rel="noopener">Instruction manual</a>
+            <a href="https://help.17track.net/hc/en-us/articles/228084227" target="_blank" rel="noopener">Package status</a>
+            <a href="https://help.17track.net/hc/en-us/articles/228084247" target="_blank" rel="noopener">Tracking status</a>
+            <a href="https://help.17track.net/hc/en-us/articles/228084367" target="_blank" rel="noopener">Shipping tips</a>
+            <a href="https://www.17track.net/en/tracking" target="_blank" rel="noopener">Tracking page</a>
+            <a href="https://www.17track.net/en/brands" target="_blank" rel="noopener">Brands</a>
+          </div>
+          <div>
+            <h3>Help</h3>
+            <a href="https://www.17track.net/en/about/contactus" target="_blank" rel="noopener">Contact us</a>
+            <a href="https://help.17track.net/hc/en-us" target="_blank" rel="noopener">Help center</a>
+            <a href="https://help.17track.net/hc/en-us/articles/228084447" target="_blank" rel="noopener">Suggestion &amp; Feedback</a>
+            <a href="https://www.17track.net/en/donate" target="_blank" rel="noopener">Donate</a>
+            <a href="https://www.17track.net/en/links" target="_blank" rel="noopener">Partners</a>
+            <a href="https://www.17track.net/en/blog" target="_blank" rel="noopener">Blog</a>
+          </div>
+          <div>
+            <h3>English</h3>
+            <a href="https://www.17track.net/zh-cn/carriers/dhl-express">简体中文</a>
+            <a href="https://www.17track.net/zh-hk/carriers/dhl-express">繁體中文</a>
+            <a href="https://www.17track.net/ja/carriers/dhl-express">日本語</a>
+            <a href="https://www.17track.net/ko/carriers/dhl-express">한국어</a>
+            <a href="https://www.17track.net/de/carriers/dhl-express">Deutsch</a>
+          </div>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <div class="lang-menu">
+            <button type="button" id="lang-toggle" aria-expanded="false" aria-controls="lang-list">English</button>
+            <div class="lang-list" id="lang-list" hidden>
+              <a href="https://www.17track.net/en/carriers/dhl-express" aria-current="true">English</a>
+              <a href="https://www.17track.net/zh-cn/carriers/dhl-express">简体中文</a>
+              <a href="https://www.17track.net/zh-hk/carriers/dhl-express">繁體中文</a>
+              <a href="https://www.17track.net/ru/carriers/dhl-express">Русский</a>
+              <a href="https://www.17track.net/es/carriers/dhl-express">Español</a>
+              <a href="https://www.17track.net/pt/carriers/dhl-express">Português</a>
+              <a href="https://www.17track.net/fr/carriers/dhl-express">Français</a>
+              <a href="https://www.17track.net/de/carriers/dhl-express">Deutsch</a>
+              <a href="https://www.17track.net/ja/carriers/dhl-express">日本語</a>
+              <a href="https://www.17track.net/ko/carriers/dhl-express">한국어</a>
+            </div>
+          </div>
+          <div>
+            <a href="https://www.17track.net/en/about/privacy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://www.17track.net/en/about/copyright" target="_blank" rel="noopener">Copyright</a>
+            <a href="https://www.17track.net/en/contact-us" target="_blank" rel="noopener">Contact us</a>
+          </div>
+        </div>
+        <p class="footer-copy">© Copyright 2011-2026 17TRACK All Rights Reserved <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">粤ICP备11015089号</a></p>
+      </div>
+    </footer>
+
+    <script>
+      const form = document.getElementById("track-form");
+      const list = document.getElementById("track-lines");
+      const tools = document.getElementById("track-tools");
+      const MAX = 40;
+
+      function lines() {
+        return [...list.querySelectorAll("[data-tracking-line]")];
+      }
+
+      function renumber() {
+        const rows = lines();
+        rows.forEach((row, index) => {
+          row.querySelector(".line-no").textContent = index + 1 + ".";
+          const input = row.querySelector("input");
+          input.setAttribute("aria-label", "Tracking number " + (index + 1));
+          const hint = row.querySelector(".placeholder");
+          if (hint) hint.hidden = index !== 0 || Boolean(input.value);
+          const odd = index % 2 === 1;
+          row.classList.toggle("is-alt", odd);
+        });
+        const filled = rows.some((row) => row.querySelector("input").value.trim());
+        tools.hidden = !filled;
+      }
+
+      function addLine(value) {
+        if (lines().length >= MAX) return null;
+        const row = document.createElement("div");
+        row.className = "track-line";
+        row.dataset.trackingLine = "";
+        row.innerHTML = '<span class="line-no"></span><div class="line-field"><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" /></div>';
+        list.appendChild(row);
+        const input = row.querySelector("input");
+        input.value = value || "";
+        renumber();
+        return input;
+      }
+
+      list.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" || event.target.tagName !== "INPUT") return;
+        event.preventDefault();
+        const next = addLine("");
+        if (next) next.focus();
+      });
+
+      list.addEventListener("paste", (event) => {
+        if (event.target.tagName !== "INPUT") return;
+        const text = event.clipboardData?.getData("text") || "";
+        const parts = text.split(/[\n\r\u2028\u2029]+/).map((part) => part.trim()).filter(Boolean);
+        if (parts.length < 2) return;
+        event.preventDefault();
+        event.target.value = parts[0];
+        parts.slice(1).forEach((part) => addLine(part));
+        renumber();
+      });
+
+      list.addEventListener("input", renumber);
+      document.getElementById("clear-lines").addEventListener("click", () => {
+        lines().slice(1).forEach((row) => row.remove());
+        lines()[0].querySelector("input").value = "";
+        renumber();
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const numbers = lines().map((row) => row.querySelector("input").value.trim()).filter(Boolean);
+        if (!numbers.length) {
+          lines()[0].querySelector("input").focus();
+          return;
+        }
+        window.location.href = "https://t.17track.net/en#nums=" + encodeURIComponent(numbers.join(",")) + "&fc=100001";
+      });
+
+      const langToggle = document.getElementById("lang-toggle");
+      const langList = document.getElementById("lang-list");
+      langToggle.addEventListener("click", () => {
+        const open = langList.hasAttribute("hidden");
+        langList.toggleAttribute("hidden", !open);
+        langToggle.setAttribute("aria-expanded", String(open));
+      });
+      const nav = document.querySelector(".primary-nav");
+      toggle.addEventListener("click", () => {
+        const open = nav.classList.toggle("open");
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      });
+    </script>
+  </body>
+</html>
