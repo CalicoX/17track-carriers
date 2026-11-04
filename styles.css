@@ -378,6 +378,24 @@ input {
   box-shadow: none;
 }
 
+.line-clear {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.line-clear[hidden] {
+  display: none;
+}
+.line-clear img {
+  display: block;
+}
+
 .placeholder {
   position: absolute;
   inset: 0;

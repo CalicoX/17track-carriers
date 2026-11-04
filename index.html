@@ -93,6 +93,9 @@
                     <p>Supports airline cargo tracking (e.g. 123-12345678).</p>
                   </div>
                 </div>
+                <button type="button" class="line-clear" aria-label="Remove line 1" hidden>
+                  <img src="/figma/close.svg" width="12" height="12" alt="" />
+                </button>
               </div>
             </div>
           </div>
@@ -696,6 +699,11 @@ curl -X POST "https://api.17track.net/track/v2.4/register" \
           input.setAttribute("aria-label", "Tracking number " + (index + 1));
           const hint = row.querySelector(".placeholder");
           if (hint) hint.hidden = index !== 0 || Boolean(input.value);
+          const clear = row.querySelector(".line-clear");
+          if (clear) {
+            clear.hidden = !input.value;
+            clear.setAttribute("aria-label", "Remove line " + (index + 1));
+          }
           const odd = index % 2 === 1;
           row.classList.toggle("is-alt", odd);
         });
@@ -703,12 +711,29 @@ curl -X POST "https://api.17track.net/track/v2.4/register" \
         tools.hidden = !filled;
       }
 
+      function removeLine(row) {
+        const rows = lines();
+        const index = rows.indexOf(row);
+        if (index < 0) return;
+        if (rows.length === 1) {
+          const input = row.querySelector("input");
+          input.value = "";
+          renumber();
+          input.focus();
+          return;
+        }
+        const focusRow = rows[index - 1] || rows[index + 1] || null;
+        row.remove();
+        renumber();
+        focusRow?.querySelector("input").focus();
+      }
+
       function addLine(value) {
         if (lines().length >= MAX) return null;
         const row = document.createElement("div");
         row.className = "track-line";
         row.dataset.trackingLine = "";
-        row.innerHTML = '<span class="line-no"></span><div class="line-field"><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" /></div>';
+        row.innerHTML = '<span class="line-no"></span><div class="line-field"><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" /><div class="placeholder"><p>Enter up to 40 tracking numbers, one per line</p><p>Supports airline cargo tracking (e.g. 123-12345678).</p></div></div><button type="button" class="line-clear" hidden><img src="/figma/close.svg" width="12" height="12" alt="" /></button>';
         list.appendChild(row);
         const input = row.querySelector("input");
         input.value = value || "";
@@ -735,6 +760,12 @@ curl -X POST "https://api.17track.net/track/v2.4/register" \
       });
 
       list.addEventListener("input", renumber);
+      list.addEventListener("click", (event) => {
+        const clear = event.target.closest(".line-clear");
+        if (!clear) return;
+        const row = clear.closest("[data-tracking-line]");
+        if (row) removeLine(row);
+      });
       document.getElementById("clear-lines").addEventListener("click", () => {
         lines().slice(1).forEach((row) => row.remove());
         lines()[0].querySelector("input").value = "";
